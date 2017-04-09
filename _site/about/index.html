@@ -72,9 +72,9 @@
       
     
 
-    <a class="sidebar-nav-item" href="/archive/v0.0.1.zip">Download</a>
+    <a class="sidebar-nav-item" href="/archive/v0.0.4.zip">Download</a>
     <a class="sidebar-nav-item" href="">GitHub project</a>
-    <span class="sidebar-nav-item">Currently v0.0.1</span>
+    <span class="sidebar-nav-item">Currently v0.0.4</span>
   </nav>
 
   <div class="sidebar-item">
@@ -102,6 +102,50 @@
   <h1 class="page-title">About</h1>
   <p>hantera is a tool which helps you manage projects which utilize a service
 oriented architecture. It’s made with passion by <a href="https://twitter.com/flipace">@flipace</a>.</p>
+
+<p><em>Tasks which hantera can help you with:</em></p>
+
+<ul>
+  <li>setting up a project and all it’s dependencies on a machine for development</li>
+  <li>versioning and publishing of dependencies as well as whole applications</li>
+  <li>deployment of applications including their dependencies at specified versions</li>
+</ul>
+
+<h3 id="usage">Usage</h3>
+
+<p>hantera requires a special hantera.yml (config file) in order to provide you with useful commands for development, versioning or deployment of applications and services based on a service oriented or distributed architecture.</p>
+
+<p><strong>Example hantera.yml:</strong></p>
+<div class="language-yaml highlighter-rouge"><pre class="highlight"><code><span class="s">version</span><span class="pi">:</span> <span class="s">0.0.1</span>
+
+<span class="s">name</span><span class="pi">:</span> <span class="s">My Application</span>
+<span class="s">description</span><span class="pi">:</span> <span class="s">The best application on the internet.</span>
+
+<span class="s">dependencies</span><span class="pi">:</span>
+  <span class="s">react-themeit</span><span class="pi">:</span>
+    <span class="s">version</span><span class="pi">:</span> <span class="s">1.0.0</span>
+    <span class="s">description</span><span class="pi">:</span> <span class="s">powerful theming for react components</span>
+    <span class="s">repository</span><span class="pi">:</span> <span class="s">git@github.com:flipace/react-themeit.git</span>
+  <span class="s">whoport</span><span class="pi">:</span>
+    <span class="s">version</span><span class="pi">:</span> <span class="s">1.0.0</span>
+    <span class="s">description</span><span class="pi">:</span> <span class="s">helper tool to easily kill processes which listen on a port</span>
+    <span class="s">repository</span><span class="pi">:</span> <span class="s">git@github.com:flipace/whoport.git</span>
+  <span class="s">lovlijs</span><span class="pi">:</span>
+    <span class="s">version</span><span class="pi">:</span> <span class="s">1.0.0</span>
+    <span class="s">description</span><span class="pi">:</span> <span class="s">lovely, small horizon + react starter kit</span>
+    <span class="s">repository</span><span class="pi">:</span> <span class="s">git@github.com:flipace/lovli.js.git</span>
+</code></pre>
+</div>
+
+<h3 id="setup-development-structure">Setup development structure</h3>
+<p>To quickly setup all repositories on your local machine, simply run</p>
+<div class="language-shell highlighter-rouge"><pre class="highlight"><code>hantera develop setup
+</code></pre>
+</div>
+
+<p>This will parse the <code class="highlighter-rouge">hantera.yml</code> in the current working directory, concurrently clone all repositories into ./{repositoryName}/ and afterwards try to install each repositories dependencies (e.g. runs <code class="highlighter-rouge">yarn</code> in repositories which contain a package.json)</p>
+
+<p>If you would like to prevent automatically installing dependencies, you may use the <code class="highlighter-rouge">--no-deps</code> flag.</p>
 
 <hr />
 

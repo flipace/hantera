@@ -4,7 +4,7 @@
  <title>hantera</title>
  <link href="http://localhost:4000/atom.xml" rel="self"/>
  <link href="http://localhost:4000/"/>
- <updated>2017-04-09T08:51:09+02:00</updated>
+ <updated>2017-04-09T21:49:36+02:00</updated>
  <id>http://localhost:4000</id>
  <author>
    <name>Patrick Neschkudla</name>
@@ -14,9 +14,9 @@
  
  <entry>
    <title>Meet hantera</title>
-   <link href="http://localhost:4000/2014/01/02/introducing-lanyon/"/>
-   <updated>2014-01-02T00:00:00+01:00</updated>
-   <id>http://localhost:4000/2014/01/02/introducing-lanyon</id>
+   <link href="http://localhost:4000/2017/04/09/introducing-lanyon/"/>
+   <updated>2017-04-09T00:00:00+02:00</updated>
+   <id>http://localhost:4000/2017/04/09/introducing-lanyon</id>
    <content type="html">&lt;p&gt;hantera is a tool which helps you manage projects which utilize a service
 oriented architecture.&lt;/p&gt;
 
