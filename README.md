@@ -1,4 +1,3 @@
-# hantera
 
 hantera is a tool which helps you manage projects which utilize a service
 oriented architecture.

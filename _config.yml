@@ -1,1 +1,24 @@
-theme: jekyll-theme-minimal
+# Dependencies
+gems: [jekyll-paginate]
+
+# Permalinks
+#
+# Use of `relative_permalinks` ensures post links from the index work properly.
+permalink:           pretty
+
+# Setup
+title:               hantera
+tagline:             'manage your projects and stay sane'
+description:         'a tool which helps you manage projects which utilize a service oriented architecture.'
+url:                 http://hantera.neschkudla.at
+baseurl:             ''
+paginate:            5
+
+# About/contact
+author:
+  name:              Patrick Neschkudla
+  url:               https://twitter.com/flipace
+  email:             neschkudla@gmail.com
+
+# Custom vars
+version:             0.0.1

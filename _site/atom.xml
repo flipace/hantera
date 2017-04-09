@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+ <title>hantera</title>
+ <link href="http://localhost:4000/atom.xml" rel="self"/>
+ <link href="http://localhost:4000/"/>
+ <updated>2017-04-09T08:51:09+02:00</updated>
+ <id>http://localhost:4000</id>
+ <author>
+   <name>Patrick Neschkudla</name>
+   <email>neschkudla@gmail.com</email>
+ </author>
+
+ 
+ <entry>
+   <title>Meet hantera</title>
+   <link href="http://localhost:4000/2014/01/02/introducing-lanyon/"/>
+   <updated>2014-01-02T00:00:00+01:00</updated>
+   <id>http://localhost:4000/2014/01/02/introducing-lanyon</id>
+   <content type="html">&lt;p&gt;hantera is a tool which helps you manage projects which utilize a service
+oriented architecture.&lt;/p&gt;
+
+&lt;p&gt;Tasks which hantera can help you:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;setting up a project and all it’s dependencies on a machine for development&lt;/li&gt;
+  &lt;li&gt;versioning and publishing of dependencies as well as whole applications&lt;/li&gt;
+  &lt;li&gt;deployment of applications including their dependencies at specified versions&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;authors&quot;&gt;Authors&lt;/h3&gt;
+
+&lt;p&gt;created with passion by @flipace&lt;/p&gt;
+
+&lt;h3 id=&quot;license&quot;&gt;License&lt;/h3&gt;
+&lt;p&gt;hantera is released under the Apache License 2.0&lt;/p&gt;
+</content>
+ </entry>
+ 
+
+</feed>
