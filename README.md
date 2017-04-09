@@ -3,7 +3,7 @@
 hantera is a tool which helps you manage projects which utilize a service
 oriented architecture.
 
-Tasks which hantera can help you:
+Tasks which hantera can help you with:
 
 - setting up a project and all it's dependencies on a machine for development
 - versioning and publishing of dependencies as well as whole applications
