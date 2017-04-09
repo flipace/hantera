@@ -24,7 +24,7 @@ func main() {
 	app.Usage = "a tool which helps you manage projects which utilize a service oriented architecture."
 	app.Compiled = time.Now()
 
-	lib.Catchy("%s v%s (%s)\n", app.Name, Version, Build)
+	lib.Catchy("%s %s\n", app.Name, Version)
 
 	app.Commands = append(
 		[]cli.Command{},
