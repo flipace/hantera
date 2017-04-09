@@ -1,5 +1,6 @@
 # This how we want to name the binary output
-BINARY=hantera
+NAME=hantera
+BINARY=bin/${NAME}
 
 # These are the values we want to pass for VERSION and BUILD
 # git tag 1.0.1
@@ -12,7 +13,7 @@ LDFLAGS=-ldflags "-w -s -X main.Version=${VERSION} -X main.Build=${BUILD}"
 
 # Builds the project
 build:
-	go build ${LDFLAGS} -o ${BINARY}
+	go build ${LDFLAGS} -o ${BINARY} main.go
 
 # Installs our project: copies binaries
 install:
@@ -21,5 +22,6 @@ install:
 # Cleans our project: deletes binaries
 clean:
 	if [ -f ${BINARY} ] ; then rm ${BINARY} ; fi
+	if [ -f ${GOBIN}/${NAME} ] ; then rm ${GOBIN}/${NAME} ; fi
 
 .PHONY: clean install

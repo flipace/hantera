@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/flipace/hantera/commands/develop"
-	"github.com/flipace/hantera/lib"
 	"github.com/urfave/cli"
 )
 
@@ -17,9 +16,6 @@ var (
 )
 
 func main() {
-	lib.Catchy("hantera %s", Version)
-	println()
-
 	app := cli.NewApp()
 	app.Version = Version
 	app.Name = "hantera"
