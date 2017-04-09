@@ -21,7 +21,6 @@ func Setup(c *cli.Context) {
 	progress := c.Bool("progress")
 
 	lib.Catchy("Setup \"%s\" v%s\n", config.Name, config.Version)
-	lib.Notice("\nCloning dependencies...\n")
 
 	// the ref to checkout
 	refName := c.String("branch")

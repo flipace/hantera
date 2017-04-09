@@ -13,14 +13,14 @@ var Commands = []cli.Command{
 			{
 				Name:        "setup",
 				Usage:       "hantera develop setup",
-				UsageText:   "hantera develop setup --config ./manifest.yml --target ./project",
+				UsageText:   "hantera develop setup --config ./hantera.yml --target ./project",
 				Description: "sets up a project for development",
 				Action:      Setup,
 				Flags: []cli.Flag{
 					cli.StringFlag{
-						Name:  "config, c, manifest",
-						Usage: "load manifest/config from `FILE.yml`",
-						Value: "./manifest.yml",
+						Name:  "config, c",
+						Usage: "load manifest from `FILE.yml`",
+						Value: "./hantera.yml",
 					},
 					cli.StringFlag{
 						Name:  "target, t",
@@ -41,14 +41,14 @@ var Commands = []cli.Command{
 				Name:        "install-dependencies",
 				Aliases:     []string{"install-deps", "id"},
 				Usage:       "hantera develop install-deps",
-				UsageText:   "hantera develop install-deps --config ./manifest.yml --target ./project",
+				UsageText:   "hantera develop install-deps --config ./hantera.yml --target ./project",
 				Description: "installs dependencies for a project",
 				Action:      InstallDependencies,
 				Flags: []cli.Flag{
 					cli.StringFlag{
-						Name:  "config, c, manifest",
-						Usage: "load manifest/config from `FILE.yml`",
-						Value: "./manifest.yml",
+						Name:  "config, c",
+						Usage: "load manifest from `FILE.yml`",
+						Value: "./hantera.yml",
 					},
 					cli.StringFlag{
 						Name:  "target, t",

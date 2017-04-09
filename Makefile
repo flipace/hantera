@@ -17,6 +17,7 @@ build:
 
 # Installs our project: copies binaries
 install:
+	make clean
 	go install ${LDFLAGS}
 
 # Cleans our project: deletes binaries
