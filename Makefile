@@ -1,5 +1,5 @@
 # This how we want to name the binary output
-BINARY=hantera
+BINARY=bin/hantera
 
 # These are the values we want to pass for VERSION and BUILD
 # git tag 1.0.1
