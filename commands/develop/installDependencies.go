@@ -4,10 +4,17 @@ import (
 	"os"
 	"os/exec"
 	"path"
+	"sync"
 
 	"github.com/flipace/hantera/lib"
 	"github.com/urfave/cli"
 )
+
+func check(err error) {
+	if err != nil {
+		panic(err)
+	}
+}
 
 // InstallDependencies : installs project dependencies (tries to figure out package manager e.g. npm)
 func InstallDependencies(c *cli.Context) {
@@ -16,33 +23,37 @@ func InstallDependencies(c *cli.Context) {
 	config := lib.GetProductConfig(configFile)
 
 	target := c.String("target")
-	if target == "" {
-		target = path.Join("./", config.Name)
-	}
 
 	lib.Catchy("Installing dependencies for \"%s\" v%s...\n", config.Name, config.Version)
 
+	// create a semaphore with l
+	var wg sync.WaitGroup
+
 	for key := range config.Dependencies {
-		targetDir := path.Join(target, key)
+		wg.Add(1)
 
-		if _, err := os.Stat(path.Join(targetDir, "package.json")); err == nil {
-			lib.Notice("|-- Found package.json for %s - running 'yarn'\n", key)
+		go func(target string, key string) {
 
-			cmd := exec.Command("yarn", "install")
-			cmd.Dir = targetDir
-			cmd.Stdout = os.Stdout
+			targetDir := path.Join(target, key)
 
-			err = cmd.Start()
+			if _, err := os.Stat(path.Join(targetDir, "package.json")); err == nil {
+				lib.Notice("|-- Found package.json for %s - running 'yarn'\n", key)
 
-			if err != nil {
-				panic(err)
+				cmd := exec.Command("yarn", "install")
+				cmd.Dir = targetDir
+				cmd.Stdout = os.Stdout
+
+				err = cmd.Start()
+				check(err)
+
+				err = cmd.Wait()
+				check(err)
 			}
 
-			err = cmd.Wait()
+			wg.Done()
+		}(target, key)
 
-			if err != nil {
-				panic(err)
-			}
-		}
 	}
+
+	wg.Wait()
 }
