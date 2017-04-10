@@ -2,19 +2,13 @@ package develop
 
 import (
 	"os"
-	"os/exec"
 	"path"
+	"path/filepath"
 	"sync"
 
 	"github.com/flipace/hantera/lib"
 	"github.com/urfave/cli"
 )
-
-func check(err error) {
-	if err != nil {
-		panic(err)
-	}
-}
 
 // InstallDependencies : installs project dependencies (tries to figure out package manager e.g. npm)
 func InstallDependencies(c *cli.Context) {
@@ -23,6 +17,7 @@ func InstallDependencies(c *cli.Context) {
 	config := lib.GetProductConfig(configFile)
 
 	target := c.String("target")
+	progress := c.Bool("progress")
 
 	lib.Catchy("Installing dependencies for \"%s\" v%s...\n", config.Name, config.Version)
 
@@ -34,20 +29,13 @@ func InstallDependencies(c *cli.Context) {
 
 		go func(target string, key string) {
 
-			targetDir := path.Join(target, key)
+			targetDir, err := filepath.Abs(path.Join(target, key))
+			check(err)
 
 			if _, err := os.Stat(path.Join(targetDir, "package.json")); err == nil {
 				lib.Notice("|-- Found package.json for %s - running 'yarn'\n", key)
 
-				cmd := exec.Command("yarn", "install")
-				cmd.Dir = targetDir
-				cmd.Stdout = os.Stdout
-
-				err = cmd.Start()
-				check(err)
-
-				err = cmd.Wait()
-				check(err)
+				lib.Run(progress, targetDir, "yarn", "install")
 			}
 
 			wg.Done()

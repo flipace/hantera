@@ -2,6 +2,12 @@ package develop
 
 import "github.com/urfave/cli"
 
+func check(err error) {
+	if err != nil {
+		panic(&err)
+	}
+}
+
 // default flags for various develop commands
 var defaultFlags = []cli.Flag{
 	cli.StringFlag{
@@ -35,7 +41,7 @@ var Commands = []cli.Command{
 						cli.StringFlag{
 							Name:  "branch, b",
 							Usage: "branch to checkout",
-							Value: "refs/heads/develop",
+							Value: "develop",
 						},
 						cli.BoolFlag{
 							Name:  "progress, p",
@@ -56,6 +62,42 @@ var Commands = []cli.Command{
 				UsageText:   "hantera develop install-deps --config ./hantera.yml --target ./project",
 				Description: "installs dependencies for a project",
 				Action:      InstallDependencies,
+				Flags: append(
+					[]cli.Flag{},
+					defaultFlags...,
+				),
+			},
+			{
+				Name:        "update",
+				Usage:       "hantera develop update",
+				UsageText:   "hantera develop update --config ./hantera.yml --target ./project",
+				Description: "updated dependencies of a project",
+				Action:      Update,
+				Flags: append(
+					[]cli.Flag{
+						cli.StringFlag{
+							Name:  "branch, b",
+							Usage: "branch to checkout",
+							Value: "develop",
+						},
+						cli.BoolFlag{
+							Name:  "progress, p",
+							Usage: "show progress",
+						},
+						cli.BoolFlag{
+							Name:  "no-deps, no-dep",
+							Usage: "don't install dependencies (e.g. npm i)",
+						},
+					},
+					defaultFlags...,
+				),
+			},
+			{
+				Name:        "clean",
+				Usage:       "hantera develop clean",
+				UsageText:   "hantera develop clean --config ./hantera.yml --target ./project",
+				Description: "clean/delete dependencies of a project",
+				Action:      Clean,
 				Flags: append(
 					[]cli.Flag{},
 					defaultFlags...,

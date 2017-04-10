@@ -3,6 +3,7 @@ package develop
 import (
 	"os"
 	"path"
+	"path/filepath"
 	"sync"
 
 	"github.com/flipace/hantera/lib"
@@ -16,13 +17,12 @@ func Setup(c *cli.Context) {
 	config := lib.GetProductConfig(configFile)
 
 	target := c.String("target")
-	refName := c.String("branch")
+	branch := c.String("branch")
 	progress := c.Bool("progress")
 	nodeps := c.Bool("no-deps")
 
 	lib.Catchy("Setup \"%s\" v%s\n", config.Name, config.Version)
 
-	println(nodeps)
 	// create and open .gitignore in target path - we put all dependencies into it
 	gitignore, err := os.Create(path.Join(target, ".gitignore"))
 	if err != nil {
@@ -35,7 +35,11 @@ func Setup(c *cli.Context) {
 	for key, value := range config.Dependencies {
 		wg.Add(1)
 
-		targetDir := path.Join(target, key)
+		workingDir, err := filepath.Abs(path.Join(target))
+		check(err)
+
+		targetDir, err := filepath.Abs(path.Join(target, key))
+		check(err)
 
 		lib.Notice("--| Cloning %s to %s\n", key, targetDir)
 
@@ -43,16 +47,14 @@ func Setup(c *cli.Context) {
 			name string,
 			repository string,
 			target string,
-			refName string,
+			branch string,
 			progress bool,
 		) {
-			lib.Clone(repository, target, refName, progress)
-
-			gitignore.WriteString(name + "\n")
-			gitignore.Sync()
+			lib.Run(progress, workingDir, "git", "clone", repository, target)
+			lib.Run(progress, target, "git", "checkout", branch)
 
 			wg.Done()
-		}(key, value.Repository, targetDir, refName, progress)
+		}(key, value.Repository, targetDir, branch, progress)
 	}
 
 	wg.Wait()

@@ -49,7 +49,7 @@ func Clone(url string, targetDir string, _refName string, _progress bool) (r *gi
 }
 
 // Pull : Pulls a given repository
-func Pull(targetDir string, _refName string, _progress bool) (err error) {
+func Pull(targetDir string, _progress bool) (err error) {
 	r, err := git.PlainOpen(targetDir)
 
 	if err != nil {
@@ -57,7 +57,7 @@ func Pull(targetDir string, _refName string, _progress bool) (err error) {
 	}
 
 	options := &git.PullOptions{
-		ReferenceName: getRefName(_refName),
+		SingleBranch: true,
 	}
 
 	if _progress {
