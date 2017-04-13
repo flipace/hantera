@@ -1,6 +1,7 @@
 package develop
 
 import (
+	"os"
 	"path"
 	"path/filepath"
 	"sync"
@@ -12,30 +13,39 @@ import (
 // Update : updates each dependencies working copy to latest version from head
 func Update(c *cli.Context) {
 	configFile := c.String("config")
+	branch := c.String("branch")
 
 	config := lib.GetProductConfig(configFile)
 
 	target := c.String("target")
-	progress := c.Bool("progress")
 
 	lib.Catchy("Updating dependencies for \"%s\" v%s...\n", config.Name, config.Version)
 
 	var wg sync.WaitGroup
 
-	for key := range config.Dependencies {
+	for key, value := range config.Dependencies {
 		wg.Add(1)
-
-		lib.Notice("--| Updating %s\n", key)
 
 		targetDir, err := filepath.Abs(path.Join(target, key))
 		check(err)
 
-		go func(workingDir string, progress bool) {
+		if _, err := os.Stat(targetDir); err != nil {
+			wg.Add(1)
+			go CloneRepository(key, targetDir, branch, value.Repository, false, &wg)
+		}
 
-			lib.Run(progress, targetDir, "git", "pull", "-r")
+		lib.Notice("--| Updating %s\n", key)
+
+		go func(name string, workingDir string) {
+			pullOut, pullErr := lib.Run(true, targetDir, false, "git", "pull", "-r")
+
+			lib.Notice("--| %s: %s", name, pullOut.String())
+			if len(pullErr.String()) > 0 {
+				println(pullErr.String())
+			}
 
 			wg.Done()
-		}(targetDir, progress)
+		}(key, targetDir)
 	}
 
 	wg.Wait()

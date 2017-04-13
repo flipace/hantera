@@ -18,7 +18,6 @@ func Setup(c *cli.Context) {
 
 	target := c.String("target")
 	branch := c.String("branch")
-	progress := c.Bool("progress")
 	nodeps := c.Bool("no-deps")
 
 	lib.Catchy("Setup \"%s\" v%s\n", config.Name, config.Version)
@@ -35,29 +34,15 @@ func Setup(c *cli.Context) {
 	for key, value := range config.Dependencies {
 		wg.Add(1)
 
-		workingDir, err := filepath.Abs(path.Join(target))
-		check(err)
-
 		targetDir, err := filepath.Abs(path.Join(target, key))
 		check(err)
 
-		lib.Notice("--| Cloning %s to %s\n", key, targetDir)
-
-		go func(
-			name string,
-			repository string,
-			target string,
-			branch string,
-			progress bool,
-		) {
-			lib.Run(progress, workingDir, "git", "clone", repository, target)
-			lib.Run(progress, target, "git", "checkout", branch)
-
-			wg.Done()
-		}(key, value.Repository, targetDir, branch, progress)
+		go CloneRepository(key, targetDir, branch, value.Repository, nodeps, &wg)
 	}
 
 	wg.Wait()
+
+	println("")
 
 	if nodeps == false {
 		InstallDependencies(c)
