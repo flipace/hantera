@@ -11,11 +11,11 @@ import (
 
 func doInstallDependencies(target string, name string, wg *sync.WaitGroup) {
 	if _, err := os.Stat(path.Join(target, "package.json")); err == nil {
-		lib.Catchy(">> Found package.json for %s - running 'yarn'\n", name)
+		lib.Notice("--| Found package.json for %s - running 'yarn'\n", name)
 
 		yarnOut, yarnErr := lib.Run(true, target, false, "yarn", "install")
 
-		lib.Notice("--| %s: %s", name, yarnOut.String())
+		lib.Notice("%s: %s", name, yarnOut.String())
 
 		if len(yarnErr.String()) > 0 {
 			println(yarnErr.String())
