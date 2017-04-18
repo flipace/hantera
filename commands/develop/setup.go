@@ -20,24 +20,40 @@ func Setup(c *cli.Context) {
 	branch := c.String("branch")
 	nodeps := c.Bool("no-deps")
 
-	lib.Catchy("Setup \"%s\" v%s\n", config.Name, config.Version)
+	steps := config.Steps.Setup
 
-	// create and open .gitignore in target path - we put all dependencies into it
-	gitignore, err := os.Create(path.Join(target, ".gitignore"))
-	if err != nil {
-		panic(err)
+	workingDir, _ := filepath.Abs(target)
+
+	if len(steps.Pre) > 0 {
+		lib.Notice("Running 'setup:pre' commands...\n")
+
+		lib.ExecuteStep(steps.Pre, workingDir)
 	}
-	defer gitignore.Close()
+
+	lib.Catchy("Setup \"%s\" v%s\n", config.Name, config.Version)
 
 	var wg sync.WaitGroup
 
-	for key, value := range config.Dependencies {
-		wg.Add(1)
+	if len(steps.Override) > 0 {
+		lib.Warning("Running 'setup:override' commands... (CAUTION: This overrides hanteras core behavior!)\n")
 
-		targetDir, err := filepath.Abs(path.Join(target, key))
-		check(err)
+		lib.ExecuteStep(steps.Override, workingDir)
+	} else {
+		// create and open .gitignore in target path - we put all dependencies into it
+		gitignore, err := os.Create(path.Join(target, ".gitignore"))
+		if err != nil {
+			panic(err)
+		}
+		defer gitignore.Close()
 
-		go CloneRepository(key, targetDir, branch, value.Repository, nodeps, &wg)
+		for key, value := range config.Dependencies {
+			wg.Add(1)
+
+			targetDir, err := filepath.Abs(path.Join(target, key))
+			check(err)
+
+			go CloneRepository(key, targetDir, branch, value.Repository, nodeps, &wg)
+		}
 	}
 
 	wg.Wait()
@@ -46,5 +62,11 @@ func Setup(c *cli.Context) {
 
 	if nodeps == false {
 		InstallDependencies(c)
+	}
+
+	if len(steps.Post) > 0 {
+		lib.Notice("Running 'setup:post' commands...\n")
+
+		lib.ExecuteStep(steps.Pre, workingDir)
 	}
 }

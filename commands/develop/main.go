@@ -61,7 +61,7 @@ var Commands = []cli.Command{
 				Usage:       "hantera develop install-deps",
 				UsageText:   "hantera develop install-deps --config ./hantera.yml --target ./project",
 				Description: "installs dependencies for a project",
-				Action:      InstallDependencies,
+				Action:      CmdInstallDependencies,
 				Flags: append(
 					[]cli.Flag{},
 					defaultFlags...,

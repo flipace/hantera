@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"os/exec"
+	"strings"
 )
 
 func check(err error, outBuf bytes.Buffer, errBuf bytes.Buffer) {
@@ -17,8 +18,8 @@ func check(err error, outBuf bytes.Buffer, errBuf bytes.Buffer) {
 }
 
 // Run : executes a process with the given parameters
-func Run(progress bool, target string, handleError bool, name string, commands ...string) (bytes.Buffer, bytes.Buffer) {
-	cmd := exec.Command(name, commands...)
+func Run(progress bool, target string, handleError bool, commands ...string) (bytes.Buffer, bytes.Buffer) {
+	cmd := exec.Command("sh", "-c", strings.Join(commands, " "))
 	cmd.Dir = target
 
 	var outBuff bytes.Buffer
