@@ -1,3 +1,7 @@
+![Version](https://img.shields.io/badge/version-0.2.0-brightgreen.svg)
+[![Build Status](https://travis-ci.org/flipace/hantera.svg?branch=master)](https://travis-ci.org/flipace/hantera)
+[![Code Climate](https://codeclimate.com/github/flipace/hantera.png)](https://codeclimate.com/github/flipace/hantera)
+
 # hantera
 
 hantera is a tool which helps you manage projects which utilize a service
