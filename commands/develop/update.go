@@ -10,16 +10,9 @@ import (
 	"github.com/urfave/cli"
 )
 
-// Update : updates each dependencies working copy to latest version from head
-func Update(c *cli.Context) {
-	configFile := c.String("config")
-	branch := c.String("branch")
-
+// RunUpdate : runs the update procedure
+func RunUpdate(configFile string, target string, branch string, nodeps bool, c *cli.Context) {
 	config := lib.GetProductConfig(configFile)
-
-	target := c.String("target")
-	nodeps := c.Bool("no-deps")
-
 	steps := config.Steps.Update
 
 	workingDir, _ := filepath.Abs(target)
@@ -47,7 +40,6 @@ func Update(c *cli.Context) {
 
 			// seems like some new dependency has been added, let's clone it
 			if _, err := os.Stat(targetDir); err != nil {
-				wg.Add(1)
 				go CloneRepository(key, targetDir, branch, value.Repository, false, &wg)
 			} else {
 				lib.Notice("--| Updating %s\n", key)
@@ -81,4 +73,15 @@ func Update(c *cli.Context) {
 	}
 
 	lib.Catchy("\nDone updating %s!\n", config.Name)
+}
+
+// Update : updates each dependencies working copy to latest version from head
+func Update(c *cli.Context) {
+	configFile := c.String("config")
+	branch := c.String("branch")
+
+	target := c.String("target")
+	nodeps := c.Bool("no-deps")
+
+	RunUpdate(configFile, target, branch, nodeps, c)
 }

@@ -11,9 +11,10 @@ type ProductConfig struct {
 
 // DependencyConfig : config for dependency
 type DependencyConfig struct {
-	Version    string
-	Repository string
-	Artifacts  string
+	Version     string
+	Description string
+	Repository  string
+	Artifacts   string
 }
 
 // Step : a step is a command of hantera for which additional commands/functionality can be configured

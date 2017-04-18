@@ -2,11 +2,8 @@ package main
 
 import (
 	"os"
-	"time"
 
-	"github.com/flipace/hantera/commands/develop"
-	"github.com/flipace/hantera/lib"
-	"github.com/urfave/cli"
+	"github.com/flipace/hantera/commands"
 )
 
 var (
@@ -17,19 +14,7 @@ var (
 )
 
 func main() {
-	app := cli.NewApp()
-
-	app.Version = Version
-	app.Name = "hantera"
-	app.Usage = "a tool which helps you manage projects which utilize a service oriented architecture."
-	app.Compiled = time.Now()
-
-	lib.Catchy("%s %s\n", app.Name, Version)
-
-	app.Commands = append(
-		[]cli.Command{},
-		develop.Commands...,
-	)
+	app := commands.GetApp(Version, Build)
 
 	app.Run(os.Args)
 }

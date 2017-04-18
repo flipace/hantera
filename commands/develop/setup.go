@@ -10,15 +10,9 @@ import (
 	"github.com/urfave/cli"
 )
 
-// Setup : sets up development environment for a project
-func Setup(c *cli.Context) {
-	configFile := c.String("config")
-
+// RunSetup : runs the setup procedure
+func RunSetup(configFile string, target string, branch string, nodeps bool, c *cli.Context) {
 	config := lib.GetProductConfig(configFile)
-
-	target := c.String("target")
-	branch := c.String("branch")
-	nodeps := c.Bool("no-deps")
 
 	steps := config.Steps.Setup
 
@@ -71,4 +65,15 @@ func Setup(c *cli.Context) {
 	}
 
 	lib.Catchy("\nDone with setup of %s!\n", config.Name)
+}
+
+// Setup : sets up development environment for a project
+func Setup(c *cli.Context) {
+	configFile := c.String("config")
+
+	target := c.String("target")
+	branch := c.String("branch")
+	nodeps := c.Bool("no-deps")
+
+	RunSetup(configFile, target, branch, nodeps, c)
 }

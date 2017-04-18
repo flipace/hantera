@@ -1,2 +1,4 @@
 .DS_Store
 _test
+junit_lib.xml
+junit_commands_develop.xml
