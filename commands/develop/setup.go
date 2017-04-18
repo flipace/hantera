@@ -67,6 +67,8 @@ func Setup(c *cli.Context) {
 	if len(steps.Post) > 0 {
 		lib.Notice("Running 'setup:post' commands...\n")
 
-		lib.ExecuteStep(steps.Pre, workingDir)
+		lib.ExecuteStep(steps.Post, workingDir)
 	}
+
+	lib.Catchy("\nDone with setup of %s!\n", config.Name)
 }

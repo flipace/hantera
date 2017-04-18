@@ -25,7 +25,7 @@ func Update(c *cli.Context) {
 	workingDir, _ := filepath.Abs(target)
 
 	if len(steps.Pre) > 0 {
-		lib.Notice("Running 'update:pre' commands...\n")
+		lib.Catchy("Running 'update:pre' commands...\n")
 
 		lib.ExecuteStep(steps.Pre, workingDir)
 	}
@@ -75,8 +75,10 @@ func Update(c *cli.Context) {
 	}
 
 	if len(steps.Post) > 0 {
-		lib.Notice("Running 'update:post' commands...\n")
+		lib.Catchy("\nRunning 'update:post' commands...\n")
 
 		lib.ExecuteStep(steps.Post, workingDir)
 	}
+
+	lib.Catchy("\nDone updating %s!\n", config.Name)
 }

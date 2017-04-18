@@ -14,12 +14,17 @@ func doInstallDependencies(target string, name string, wg *sync.WaitGroup) {
 	if _, err := os.Stat(path.Join(target, "package.json")); err == nil {
 		lib.Notice("--| Found package.json for %s - running 'yarn'\n", name)
 
-		yarnOut, yarnErr := lib.Run(true, target, false, "yarn", "install")
+		yarnOut, yarnErr := lib.Run(true, target, false, "yarn -s")
 
-		lib.Notice("%s: %s", name, yarnOut.String())
+		o := yarnOut.String()
+		e := yarnErr.String()
 
-		if len(yarnErr.String()) > 0 {
-			println(yarnErr.String())
+		if len(o) > 0 {
+			lib.Notice("--| %s: %s\n", name, o)
+		}
+
+		if len(e) > 0 {
+			println(e)
 		}
 	} else {
 		lib.Notice(">> Found no package.json for %s", name)
@@ -31,6 +36,8 @@ func doInstallDependencies(target string, name string, wg *sync.WaitGroup) {
 // CmdInstallDependencies : this is a wrapper for InstallDependencies, used by the main command triggered by cli
 func CmdInstallDependencies(c *cli.Context) {
 	InstallDependencies(c)
+
+	lib.Catchy("\nDone installing dependencies!\n")
 }
 
 // InstallDependencies : installs project dependencies (tries to figure out package manager e.g. npm)
@@ -49,7 +56,7 @@ func InstallDependencies(c *cli.Context, params ...string) {
 	var wg sync.WaitGroup
 
 	if len(steps.Pre) > 0 {
-		lib.Notice("Running 'dependencies:pre' commands...\n")
+		lib.Catchy("Running 'dependencies:pre' commands...\n")
 
 		lib.ExecuteStep(steps.Pre, workingDir)
 	}
@@ -59,7 +66,7 @@ func InstallDependencies(c *cli.Context, params ...string) {
 	 * the "dependencies.override" step.
 	 */
 	if len(steps.Override) > 0 {
-		lib.Notice("Running 'dependencies:override' commands...\n")
+		lib.Catchy("Running 'dependencies:override' commands...\n")
 
 		lib.ExecuteStep(steps.Override, workingDir)
 	} else {
@@ -80,7 +87,7 @@ func InstallDependencies(c *cli.Context, params ...string) {
 	wg.Wait()
 
 	if len(steps.Post) > 0 {
-		lib.Notice("Running 'dependencies:post' commands...\n")
+		lib.Catchy("Running 'dependencies:post' commands...\n")
 
 		lib.ExecuteStep(steps.Post, workingDir)
 	}
