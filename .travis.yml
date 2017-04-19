@@ -11,6 +11,10 @@ install:
   - go get github.com/fatih/color
   - go get gopkg.in/yaml.v2
   - go get github.com/urfave/cli
-  
+
 script:
   - ginkgo ./...
+
+notifications:
+  email:
+    - neschkudla+github@gmail.com
